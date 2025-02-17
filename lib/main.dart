@@ -16,7 +16,7 @@ class PseudoJSON extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.latoTextTheme()
       ),
-      home:HomePage(),
+      home: const HomePage(),
     );
   }
 }
