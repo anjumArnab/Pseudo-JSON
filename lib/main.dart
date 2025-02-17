@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pseudo_json/screens/homepage.dart';
 
 void main() {
@@ -12,6 +13,9 @@ class PseudoJSON extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        textTheme: GoogleFonts.latoTextTheme()
+      ),
       home:HomePage(),
     );
   }
