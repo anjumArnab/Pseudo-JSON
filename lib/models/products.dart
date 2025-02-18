@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Product {
   final int id;
   final String title;
@@ -50,45 +48,37 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
+    var tagsList = List<String>.from(json['tags']);
+    var reviewsList = (json['reviews'] as List)
+        .map((review) => Review.fromJson(review))
+        .toList();
+    var dimensions = Dimensions.fromJson(json['dimensions']);
+    var meta = Meta.fromJson(json['meta']);
+    var imagesList = List<String>.from(json['images']);
+
     return Product(
       id: json['id'],
       title: json['title'],
       description: json['description'],
       category: json['category'],
-      price: json['price'].toDouble(),
-      discountPercentage: json['discountPercentage'].toDouble(),
-      rating: json['rating'].toDouble(),
+      price: json['price'],
+      discountPercentage: json['discountPercentage'],
+      rating: json['rating'],
       stock: json['stock'],
-      tags: List<String>.from(json['tags']),
+      tags: tagsList,
       brand: json['brand'],
       sku: json['sku'],
-      weight: json['weight'].toDouble(),
-      dimensions: Dimensions.fromJson(json['dimensions']),
+      weight: json['weight'],
+      dimensions: dimensions,
       warrantyInformation: json['warrantyInformation'],
       shippingInformation: json['shippingInformation'],
       availabilityStatus: json['availabilityStatus'],
-      reviews: (json['reviews'] as List).map((e) => Review.fromJson(e)).toList(),
+      reviews: reviewsList,
       returnPolicy: json['returnPolicy'],
       minimumOrderQuantity: json['minimumOrderQuantity'],
-      meta: Meta.fromJson(json['meta']),
-      images: List<String>.from(json['images']),
+      meta: meta,
+      images: imagesList,
       thumbnail: json['thumbnail'],
-    );
-  }
-}
-
-class Dimensions {
-  final double width;
-  final double height;
-  final double depth;
-
-  Dimensions({required this.width, required this.height, required this.depth});
-
-  factory Dimensions.fromJson(Map<String, dynamic> json) {
-    return Dimensions(
-      width: json['width'].toDouble(),
-      height: json['height'].toDouble(),
-      depth: json['depth'].toDouble(),
     );
   }
 }
@@ -96,7 +86,7 @@ class Dimensions {
 class Review {
   final int rating;
   final String comment;
-  final DateTime date;
+  final String date;
   final String reviewerName;
   final String reviewerEmail;
 
@@ -112,16 +102,36 @@ class Review {
     return Review(
       rating: json['rating'],
       comment: json['comment'],
-      date: DateTime.parse(json['date']),
+      date: json['date'],
       reviewerName: json['reviewerName'],
       reviewerEmail: json['reviewerEmail'],
     );
   }
 }
 
+class Dimensions {
+  final double width;
+  final double height;
+  final double depth;
+
+  Dimensions({
+    required this.width,
+    required this.height,
+    required this.depth,
+  });
+
+  factory Dimensions.fromJson(Map<String, dynamic> json) {
+    return Dimensions(
+      width: json['width'],
+      height: json['height'],
+      depth: json['depth'],
+    );
+  }
+}
+
 class Meta {
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String createdAt;
+  final String updatedAt;
   final String barcode;
   final String qrCode;
 
@@ -134,18 +144,36 @@ class Meta {
 
   factory Meta.fromJson(Map<String, dynamic> json) {
     return Meta(
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
       barcode: json['barcode'],
       qrCode: json['qrCode'],
     );
   }
 }
 
-// Function to parse JSON string into a list of products
-List<Product> parseProducts(String jsonStr) {
-  final Map<String, dynamic> jsonData = json.decode(jsonStr);
-  return (jsonData['products'] as List)
-      .map((productJson) => Product.fromJson(productJson))
-      .toList();
+class ProductList {
+  final List<Product> products;
+  final int total;
+  final int skip;
+  final int limit;
+
+  ProductList({
+    required this.products,
+    required this.total,
+    required this.skip,
+    required this.limit,
+  });
+
+  factory ProductList.fromJson(Map<String, dynamic> json) {
+    var productList = (json['products'] as List)
+        .map((product) => Product.fromJson(product))
+        .toList();
+    return ProductList(
+      products: productList,
+      total: json['total'],
+      skip: json['skip'],
+      limit: json['limit'],
+    );
+  }
 }
