@@ -1,39 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:pseudo_json/models/auth_user.dart';
+import 'package:pseudo_json/models/products.dart';
+import 'package:pseudo_json/widgets/drawer.dart';
+import 'package:pseudo_json/widgets/product_card.dart';
 
-class HomePage extends StatelessWidget {
-  // Accept AuthUser as a parameter
+class HomePage extends StatefulWidget {
   final AuthUser user;
+  final Product product;
 
-  const HomePage({super.key, required this.user});
+  const HomePage({super.key, required this.user, required this.product});
 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("P S E U D O  J S O N"),
+        title: Text("Welcome ${widget.user.firstName}"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Welcome, ${user.firstName} ${user.lastName}!',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              Text('Email: ${user.email}'),
-              Text('Username: ${user.username}'),
-              Text('Role: ${user.role}'),
-              const SizedBox(height: 20),
-              user.image.isNotEmpty
-                  ? Image.network(user.image)
-                  : const Text('No image available'),
-            ],
-          ),
-        ),
+      drawer: CustomDrawer(user: widget.user),
+      body: ProductCard(
+        imageUrl: widget.product.images[0],
+        title: widget.product.title,
+        catagory: widget.product.category,
+        price: widget.product.price,
+        discountPercentage: widget.product.discountPercentage,
+        brand: widget.product.brand,
+        sku: widget.product.sku,
       ),
     );
   }
