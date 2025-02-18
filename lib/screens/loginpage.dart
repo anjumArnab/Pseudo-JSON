@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pseudo_json/models/auth_response.dart';
 import 'package:pseudo_json/models/auth_user.dart';
+import 'package:pseudo_json/models/products.dart';
 import 'package:pseudo_json/screens/homepage.dart';
 import 'package:pseudo_json/services/api_services.dart';
 import 'package:pseudo_json/widgets/custom_button.dart';
@@ -9,35 +10,72 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _HomepageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _HomepageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  Future<AuthUser?> fetchCurrentUser(String accessToken) async {
+    try {
+      final user = await getCurrentUser(accessToken);
+      return user;
+    } catch (e) {
+      print('Error fetching current user: $e');
+      return null;
+    }
+  }
+
+  Future<List<Product>?> fetchProductInfo() async {
+    try {
+      final products = await getProductInfo();
+      return products;
+    } catch (e) {
+      print('Error fetching products: $e');
+      return null;
+    }
+  }
 
   Future<void> _handleLogin() async {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    AuthResponse? authResponse = await loginUser(username, password);
+    try {
+      final authResponse = await loginUser(username, password);
 
-    if (authResponse != null) {
-      print('Login successful! Access Token: ${authResponse.accessToken}');
-      AuthUser? user = await getCurrentUser(authResponse.accessToken);
-      if (user != null) {
-        print('User Info: ${user.firstName} ${user.lastName}');
-        // Pass user data to HomePage after login
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(user: user), // Pass user here
-          ),
-        );
+      if (authResponse == null) {
+        print('Login failed: No response from the server');
+        return;
       }
-    } else {
-      print('Login failed');
+
+      print('Login successful! Access Token: ${authResponse.accessToken}');
+
+      final user = await fetchCurrentUser(authResponse.accessToken);
+      if (user == null) {
+        print('User fetch failed');
+        return;
+      }
+
+      print('User Info: ${user.firstName} ${user.lastName}');
+
+      final products = await fetchProductInfo();
+      if (products == null || products.isEmpty) {
+        print('No products found');
+        return;
+      }
+
+      final product = products[0]; // Passing the first product
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(user: user, product: product),
+        ),
+      );
+    } catch (e) {
+      print('Error during login: $e');
     }
   }
 
@@ -91,7 +129,7 @@ class _HomepageState extends State<LoginPage> {
               const SizedBox(height: 20),
               CustomButton(
                 onPressed: _handleLogin,
-                text: 'Login',
+                text: 'Log In',
               ),
             ],
           ),
