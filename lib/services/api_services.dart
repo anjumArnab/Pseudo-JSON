@@ -13,19 +13,16 @@ Future<AuthResponse?> loginUser(String username, String password) async {
       body: jsonEncode({
         'username': username,
         'password': password,
-        'expiresInMins': 30, // optional, defaults to 60
+        'expiresInMins': 30,
       }),
     );
 
     if (response.statusCode == 200) {
       return AuthResponse.fromJson(jsonDecode(response.body));
     } else {
-      print('Login failed with status code ${response.statusCode}');
-      print('Response body: ${response.body}');
       return null;
     }
   } catch (e) {
-    print('Error during login: $e');
     return null;
   }
 }
@@ -43,11 +40,9 @@ Future<AuthUser?> getCurrentUser(String accessToken) async {
     if (response.statusCode == 200) {
       return AuthUser.fromJson(jsonDecode(response.body));
     } else {
-      print('Failed to fetch user: ${response.body}');
       return null;
     }
   } catch (e) {
-    print('Error fetching current user: $e');
     return null;
   }
 }
@@ -59,22 +54,62 @@ Future<List<Product>?> getProductInfo() async {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      print('Response body: ${response.body}'); // Log the full response body
 
       if (data != null && data['products'] != null) {
         var productsData = data['products'];
         return List<Product>.from(productsData.map((product) => Product.fromJson(product)));
       } else {
-        print('No products found in response.');
         return null;
       }
     } else {
-      print('Failed to fetch products: ${response.body}');
       return null;
     }
   } catch (e) {
-    print('Error fetching products: $e');
     return null;
   }
 }
 
+Future<List<Product>?> getSearchProduct(String keyword) async {
+   try {
+    final url = Uri.parse('https://dummyjson.com/products/search?q=$keyword');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      if (data != null && data['products'] != null) {
+        var productsData = data['products'];
+        return List<Product>.from(productsData.map((product) => Product.fromJson(product)));
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+}
+
+Future<List<Product>?> getSortProducts(String sortBy, String order) async {
+
+  try {
+    final url = Uri.parse('https://dummyjson.com/products?sortBy=$sortBy&order=$order');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      if (data != null && data['products'] != null) {
+        var productsData = data['products'];
+        return List<Product>.from(productsData.map((product) => Product.fromJson(product)));
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+}
