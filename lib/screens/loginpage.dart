@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pseudo_json/models/auth_user.dart';
 import 'package:pseudo_json/services/api_services.dart';
 import 'package:pseudo_json/screens/homepage.dart';
 import 'package:pseudo_json/widgets/custom_button.dart';
