@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ProductCard extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final String catagory;
+  final String category;
   final double price;
   final double discountPercentage;
   final String brand;
@@ -13,7 +13,7 @@ class ProductCard extends StatelessWidget {
     super.key,
     required this.imageUrl,
     required this.title,
-    required this.catagory,
+    required this.category,
     required this.price,
     required this.discountPercentage,
     required this.brand,
@@ -38,35 +38,42 @@ class ProductCard extends StatelessWidget {
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-              border: Border(
-                  bottom: BorderSide(color: Colors.black, width: 2)),
+              border: Border(bottom: BorderSide(color: Colors.black, width: 2)),
             ),
             child: SizedBox(
-              width: 200,
-              height: 110,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+  width: 200,
+  height: 110,
+  child: ClipRRect(
+    borderRadius: BorderRadius.circular(8),
+    child: Image.network(
+      imageUrl,
+      fit: BoxFit.contain, // Ensures the whole image is visible
+    ),
+  ),
+),
+
           ),
           const SizedBox(height: 1),
           Text(
             title,
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 5),
-          Text(
-            catagory,
-            style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+          Card(
+            child: Text(
+              category,
+              style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+            ),
           ),
           const SizedBox(height: 10),
           Text("$price"),
           const SizedBox(height: 10),
-          Text("$discountPercentage% off"),
+          Card(
+            color: Colors.red.shade50,
+            child: Text("$discountPercentage% off"),
+          ),
           Text(brand),
           Text(sku),
         ],

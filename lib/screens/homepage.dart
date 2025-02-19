@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         title: Text("Welcome ${widget.user.firstName}"),
       ),
       drawer: CustomDrawer(user: widget.user),
-      body: FutureBuilder<List<Product>?> (
+      body: FutureBuilder<List<Product>?>(
         future: _productsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                 return ProductCard(
                   imageUrl: product.images[0],
                   title: product.title,
-                  catagory: product.category,
+                  category: product.category,
                   price: product.price,
                   discountPercentage: product.discountPercentage,
                   brand: product.brand,

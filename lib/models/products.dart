@@ -57,28 +57,28 @@ class Product {
     var imagesList = List<String>.from(json['images']);
 
     return Product(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      category: json['category'],
+      id: json['id'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      category: json['category'] ?? '',
       price: json['price'],
-      discountPercentage: json['discountPercentage'],
-      rating: json['rating'],
-      stock: json['stock'],
-      tags: tagsList,
-      brand: json['brand'],
-      sku: json['sku'],
-      weight: json['weight'],
+      discountPercentage: json['discountPercentage'] ?? '',
+      rating: json['rating'] ?? '',
+      stock: json['stock'] ?? '',
+      tags: tagsList ,
+      brand: json['brand'] ?? '',
+      sku: json['sku'] ?? '',
+      weight: json['weight'] ?? '',
       dimensions: dimensions,
-      warrantyInformation: json['warrantyInformation'],
-      shippingInformation: json['shippingInformation'],
-      availabilityStatus: json['availabilityStatus'],
+      warrantyInformation: json['warrantyInformation'] ?? '',
+      shippingInformation: json['shippingInformation'] ?? '',
+      availabilityStatus: json['availabilityStatus'] ?? '',
       reviews: reviewsList,
-      returnPolicy: json['returnPolicy'],
-      minimumOrderQuantity: json['minimumOrderQuantity'],
+      returnPolicy: json['returnPolicy'] ?? '',
+      minimumOrderQuantity: json['minimumOrderQuantity'] ?? '',
       meta: meta,
       images: imagesList,
-      thumbnail: json['thumbnail'],
+      thumbnail: json['thumbnail'] ?? '',
     );
   }
 }
@@ -100,11 +100,11 @@ class Review {
 
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
-      rating: json['rating'],
-      comment: json['comment'],
-      date: json['date'],
-      reviewerName: json['reviewerName'],
-      reviewerEmail: json['reviewerEmail'],
+      rating: json['rating'] ?? '',
+      comment: json['comment'] ?? '',
+      date: json['date'] ?? '',
+      reviewerName: json['reviewerName'] ?? '',
+      reviewerEmail: json['reviewerEmail'] ?? '',
     );
   }
 }
@@ -122,9 +122,9 @@ class Dimensions {
 
   factory Dimensions.fromJson(Map<String, dynamic> json) {
     return Dimensions(
-      width: json['width'],
-      height: json['height'],
-      depth: json['depth'],
+      width: json['width'] ?? '',
+      height: json['height'] ?? '',
+      depth: json['depth'] ?? '',
     );
   }
 }
@@ -144,10 +144,10 @@ class Meta {
 
   factory Meta.fromJson(Map<String, dynamic> json) {
     return Meta(
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      barcode: json['barcode'],
-      qrCode: json['qrCode'],
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
+      barcode: json['barcode'] ?? '',
+      qrCode: json['qrCode'] ?? '',
     );
   }
 }
@@ -171,9 +171,9 @@ class ProductList {
         .toList();
     return ProductList(
       products: productList,
-      total: json['total'],
-      skip: json['skip'],
-      limit: json['limit'],
+      total: json['total'] ?? '',
+      skip: json['skip'] ?? '',
+      limit: json['limit'] ?? '',
     );
   }
 }
