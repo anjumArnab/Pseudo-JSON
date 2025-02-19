@@ -24,7 +24,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(5),
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.black, width: 2),
@@ -34,26 +34,25 @@ class ProductCard extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
               border: Border(bottom: BorderSide(color: Colors.black, width: 2)),
             ),
             child: SizedBox(
-  width: 200,
-  height: 110,
-  child: ClipRRect(
-    borderRadius: BorderRadius.circular(8),
-    child: Image.network(
-      imageUrl,
-      fit: BoxFit.contain, // Ensures the whole image is visible
-    ),
-  ),
-),
-
+              width: 200,
+              height: 110,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
           ),
-          const SizedBox(height: 1),
+          const SizedBox(height: 5),
           Text(
             title,
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -61,21 +60,47 @@ class ProductCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 5),
-          Card(
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: Text(
               category,
-              style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+              style: const TextStyle(fontSize: 12, color: Colors.black),
             ),
           ),
           const SizedBox(height: 10),
-          Text("$price"),
-          const SizedBox(height: 10),
-          Card(
-            color: Colors.red.shade50,
-            child: Text("$discountPercentage% off"),
+          Row(
+            children: [
+              Text(
+                "\$$price",
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade500,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "$discountPercentage% off",
+                  style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
-          Text(brand),
-          Text(sku),
+          const SizedBox(height: 5),
+          Text(brand,
+              style:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          Text(sku, style: const TextStyle(fontSize: 12, color: Colors.grey)),
         ],
       ),
     );
