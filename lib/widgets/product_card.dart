@@ -7,7 +7,6 @@ class ProductCard extends StatelessWidget {
   final double price;
   final double discountPercentage;
   final String brand;
-  final String sku;
 
   const ProductCard({
     super.key,
@@ -17,7 +16,6 @@ class ProductCard extends StatelessWidget {
     required this.price,
     required this.discountPercentage,
     required this.brand,
-    required this.sku,
   });
 
   @override
@@ -26,10 +24,10 @@ class ProductCard extends StatelessWidget {
       margin: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black, width: 2),
+        border: Border.all(color: Colors.black, width: 1),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         child: Stack(
           children: [
             Positioned.fill(
@@ -45,7 +43,7 @@ class ProductCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
+                  color: Colors.black.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
@@ -95,10 +93,6 @@ class ProductCard extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
-                    Text(
-                      sku,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),

@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.user});
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -56,137 +55,132 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: isSearching
-            ? TextField(
-                controller: searchController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: 'Search by title...',
-                  hintStyle: TextStyle(color: Colors.black),
-                ),
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    searchProducts(value);
-                  } else {
-                    setState(() {
-                      _productsFuture = fetchProductInfo();
-                    });
-                  }
-                },
-              )
-            : Text("Welcome ${widget.user.firstName}"),
-        actions: [
-          IconButton(
-            icon: Icon(isSearching ? Icons.close : Icons.search),
-            onPressed: () {
-              setState(() {
-                isSearching = !isSearching;
-                if (!isSearching) {
-                  searchController.clear();
-                  _productsFuture = fetchProductInfo();
-                }
-              });
-            },
-          ),
-          DropdownButton<String>(
-            value: _selectedSortBy,
-            icon: const Icon(Icons.sort, color: Colors.black),
-            dropdownColor: Colors.white,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                updateSorting(newValue, _selectedOrder);
-              }
-            },
-            items: const [
-              DropdownMenuItem(
-                value: 'price',
-                child: Text(
-                  'Price',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              DropdownMenuItem(
-                value: 'rating',
-                child: Text(
-                  'Rating',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              DropdownMenuItem(
-                value: 'discountPercentage',
-                child: Text(
-                  'Discount',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-            ],
-          ),
-          DropdownButton<String>(
-            value: _selectedOrder,
-            icon: const Icon(Icons.arrow_downward, color: Colors.black),
-            dropdownColor: Colors.white,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                updateSorting(_selectedSortBy, newValue);
-              }
-            },
-            items: const [
-              DropdownMenuItem(
-                value: 'asc',
-                child: Text(
-                  'Ascending',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              DropdownMenuItem(
-                value: 'desc',
-                child: Text(
-                  'Descending',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-            ],
-          ),
-        ],
+        title: Text("Welcome ${widget.user.firstName}"),
       ),
       drawer: CustomDrawer(user: widget.user),
-      body: FutureBuilder<List<Product>?>(
-        future: _productsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          if (snapshot.data == null || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No products found'));
-          }
-          return Padding(
+      body: Column(
+        children: [
+          Padding(
             padding: const EdgeInsets.all(8.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                childAspectRatio: 0.7,
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+                hintText: 'Search Products',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
               ),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final product = snapshot.data![index];
-                return ProductCard(
-                  imageUrl: product.images[0],
-                  title: product.title,
-                  category: product.category,
-                  price: product.price,
-                  discountPercentage: product.discountPercentage,
-                  brand: product.brand,
-                  sku: product.sku,
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  searchProducts(value);
+                } else {
+                  setState(() {
+                    _productsFuture = fetchProductInfo();
+                  });
+                }
+              },
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<Product>?>(
+              future: _productsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (snapshot.data == null || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No products found'));
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 5.0,
+                      mainAxisSpacing: 5.0,
+                      childAspectRatio: 1.4,
+                    ),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final product = snapshot.data![index];
+                      return Transform.scale(
+                        scale: 1.0,
+                        child: ProductCard(
+                          imageUrl: product.images[0],
+                          title: product.title,
+                          category: product.category,
+                          price: product.price,
+                          discountPercentage: product.discountPercentage,
+                          brand: product.brand,
+                          sku: product.sku,
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),
-          );
-        },
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.small(
+        onPressed: () {},
+        shape: const CircleBorder(),
+        backgroundColor: Colors.white,
+        child: PopupMenuButton<String>(
+          icon: const Icon(Icons.filter_list, color: Colors.black),
+          elevation: 0,
+          color: Colors.transparent,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          onSelected: (String value) {
+            if (value == 'asc' || value == 'desc') {
+              updateSorting(_selectedSortBy, value);
+            } else {
+              updateSorting(value, _selectedOrder);
+            }
+          },
+          itemBuilder: (context) => [
+            _buildPopupMenuItem('price', 'Price'),
+            _buildPopupMenuItem('rating', 'Rating'),
+            _buildPopupMenuItem('discountPercentage', 'Discount'),
+            const PopupMenuDivider(),
+            _buildPopupMenuItem('asc', 'Ascending Order'),
+            _buildPopupMenuItem('desc', 'Descending Order'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  PopupMenuItem<String> _buildPopupMenuItem(String value, String text) {
+    return PopupMenuItem(
+      value: value,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        decoration: BoxDecoration(
+          color: Colors.white, // White background for items
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1), // Soft shadow
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }
