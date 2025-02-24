@@ -120,7 +120,6 @@ class _HomePageState extends State<HomePage> {
                           price: product.price,
                           discountPercentage: product.discountPercentage,
                           brand: product.brand,
-                          sku: product.sku,
                         ),
                       );
                     },
