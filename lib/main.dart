@@ -20,4 +20,3 @@ class PseudoJSON extends StatelessWidget {
     );
   }
 }
-
