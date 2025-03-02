@@ -114,7 +114,7 @@ Future<List<Product>?> getSortProducts(String sortBy, String order) async {
   }
 }
 
-Future<List<Product>?> updateProduct(Product product) async {
+Future<Product?> updateProduct(Product product) async {
   try {
     final url = Uri.parse('https://dummyjson.com/products/${product.id}');
     final response = await http.put(
@@ -126,16 +126,14 @@ Future<List<Product>?> updateProduct(Product product) async {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
 
-      if (data != null && data['products'] != null) {
-        var productsData = data['products'];
-        return List<Product>.from(productsData.map((product) => Product.fromJson(product)));
-      } else {
-        return null;
-      }
+      // DummyJSON API returns a single updated product, not a list
+      return Product.fromJson(data);
     } else {
+      print('Failed to update product. Status code: ${response.statusCode}');
       return null;
     }
   } catch (e) {
+    print('Error updating product: $e');
     return null;
   }
-} 
+}
