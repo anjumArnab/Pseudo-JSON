@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pseudo_json/models/auth_user.dart';
 import 'package:pseudo_json/models/products.dart';
+import 'package:pseudo_json/screens/product_detail_page.dart';
 import 'package:pseudo_json/widgets/drawer.dart';
 import 'package:pseudo_json/widgets/product_card.dart';
 import 'package:pseudo_json/services/api_services.dart';
@@ -11,6 +12,7 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.user});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -49,6 +51,12 @@ class _HomePageState extends State<HomePage> {
       _selectedOrder = order;
       _productsFuture = getSortProducts(_selectedSortBy, _selectedOrder);
     });
+  }
+
+  void moveToProductDetail(Product product) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => ProductDetailPage(product: product)),
+    );
   }
 
   @override
@@ -113,13 +121,16 @@ class _HomePageState extends State<HomePage> {
                       final product = snapshot.data![index];
                       return Transform.scale(
                         scale: 1.0,
-                        child: ProductCard(
-                          imageUrl: product.images[0],
-                          title: product.title,
-                          category: product.category,
-                          price: product.price,
-                          discountPercentage: product.discountPercentage,
-                          brand: product.brand,
+                        child: GestureDetector(
+                          onTap: () => moveToProductDetail(product),
+                          child: ProductCard(
+                            imageUrl: product.images[0],
+                            title: product.title,
+                            category: product.category,
+                            price: product.price,
+                            discountPercentage: product.discountPercentage,
+                            brand: product.brand,
+                          ),
                         ),
                       );
                     },
