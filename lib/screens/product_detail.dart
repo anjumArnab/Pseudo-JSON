@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pseudo_json/models/products.dart';
+import 'package:pseudo_json/screens/product_detail_page.dart';
+import 'package:pseudo_json/services/api_services.dart';
 import 'package:pseudo_json/widgets/custom_button.dart';
 import 'package:pseudo_json/widgets/custom_text_field.dart';
 
@@ -28,6 +30,7 @@ class _ProductDetailState extends State<ProductDetail> {
   late TextEditingController availabilityStatusController;
   late TextEditingController returnPolicyController;
   late TextEditingController minimumOrderQuantityController;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -48,6 +51,62 @@ class _ProductDetailState extends State<ProductDetail> {
     returnPolicyController = TextEditingController(text: widget.product.returnPolicy);
     minimumOrderQuantityController = TextEditingController(text: widget.product.minimumOrderQuantity.toString());
   }
+
+  Future<void> updateProductDetails() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    Product updatedProduct = Product(
+      id: widget.product.id,
+      title: titleController.text,
+      description: descriptionController.text,
+      category: categoryController.text,
+      price: double.parse(priceController.text),
+      discountPercentage: double.parse(discountPercentageController.text),
+      rating: double.parse(ratingController.text),
+      stock: int.parse(stockController.text),
+      tags: widget.product.tags,
+      brand: brandController.text,
+      sku: skuController.text,
+      weight: double.parse(weightController.text),
+      dimensions: widget.product.dimensions,
+      warrantyInformation: warrantyInformationController.text,
+      shippingInformation: shippingInformationController.text,
+      availabilityStatus: availabilityStatusController.text,
+      reviews: widget.product.reviews,
+      returnPolicy: returnPolicyController.text,
+      minimumOrderQuantity: int.parse(minimumOrderQuantityController.text),
+      meta: widget.product.meta,
+      images: widget.product.images,
+      thumbnail: widget.product.thumbnail,
+    );
+
+    List<Product>? updatedProducts = await updateProduct(updatedProduct);
+
+    if (updatedProducts != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Product updated successfully!")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to update product")),
+      );
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+    
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductDetailPage(product: updatedProduct),
+        ),
+      );
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +151,12 @@ class _ProductDetailState extends State<ProductDetail> {
               const SizedBox(height: 5),
               CustomTextField(controller: minimumOrderQuantityController, hintText: "What is the minimum order quantity"),
               const SizedBox(height: 10),
-              CustomButton(onPressed: () {}, text: "Done"),
+              CustomButton(
+                onPressed: ()async{
+                  isLoading ? null : updateProductDetails;
+                },
+                text: isLoading ? "Updating..." : "Update",
+              ),
             ],
           ),
         ),
