@@ -113,3 +113,29 @@ Future<List<Product>?> getSortProducts(String sortBy, String order) async {
     return null;
   }
 }
+
+Future<List<Product>?> updateProduct(Product product) async {
+  try {
+    final url = Uri.parse('https://dummyjson.com/products/${product.id}');
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(product.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      if (data != null && data['products'] != null) {
+        var productsData = data['products'];
+        return List<Product>.from(productsData.map((product) => Product.fromJson(product)));
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+} 
