@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pseudo_json/models/products.dart';
-import 'package:pseudo_json/screens/product_detail.dart';
+import '../models/products.dart';
+import '../screens/product_detail.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Product product;
 
   const ProductDetailPage({super.key, required this.product});
 
-    void moveToProductDetail(BuildContext context){
+  void moveToProductDetail(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => ProductDetail(product: product)),
     );
@@ -22,7 +22,7 @@ class ProductDetailPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.update),
-            onPressed: (){
+            onPressed: () {
               moveToProductDetail(context);
             },
           ),
@@ -53,7 +53,10 @@ class ProductDetailPage extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               "\$${product.price.toStringAsFixed(2)} (-${product.discountPercentage.toStringAsFixed(2)}%)",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green),
             ),
             const SizedBox(height: 8),
             Row(
@@ -86,7 +89,8 @@ class ProductDetailPage extends StatelessWidget {
             Text(product.returnPolicy),
             const SizedBox(height: 16),
             _buildSectionTitle("Product Dimensions"),
-            Text("${product.dimensions.width} x ${product.dimensions.height} x ${product.dimensions.depth} cm"),
+            Text(
+                "${product.dimensions.width} x ${product.dimensions.height} x ${product.dimensions.depth} cm"),
             const SizedBox(height: 16),
             _buildSectionTitle("Reviews"),
             _buildReviewList(),
@@ -126,8 +130,12 @@ class ProductDetailPage extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(review.comment, style: const TextStyle(fontSize: 16)),
                 const SizedBox(height: 4),
-                Text("- ${review.reviewerName}", style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                Text("Reviewed on: ${DateFormat.yMMMd().format(DateTime.parse(review.date))}", style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                Text("- ${review.reviewerName}",
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold)),
+                Text(
+                    "Reviewed on: ${DateFormat.yMMMd().format(DateTime.parse(review.date))}",
+                    style: const TextStyle(fontSize: 12, color: Colors.grey)),
               ],
             ),
           ),

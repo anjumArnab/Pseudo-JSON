@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pseudo_json/services/api_services.dart';
-import 'package:pseudo_json/screens/homepage.dart';
-import 'package:pseudo_json/widgets/custom_button.dart';
+import '../services/api_services.dart';
+import '../screens/homepage.dart';
+import '../widgets/custom_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

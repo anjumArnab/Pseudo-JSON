@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pseudo_json/screens/loginpage.dart';
+import '../screens/loginpage.dart';
 
 void main() {
   runApp(const PseudoJSON());
@@ -13,9 +13,7 @@ class PseudoJSON extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: GoogleFonts.latoTextTheme()
-      ),
+      theme: ThemeData(textTheme: GoogleFonts.latoTextTheme()),
       home: const LoginPage(),
     );
   }

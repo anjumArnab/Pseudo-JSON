@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pseudo_json/models/auth_user.dart';
-import 'package:pseudo_json/models/products.dart';
-import 'package:pseudo_json/screens/product_detail_page.dart';
-import 'package:pseudo_json/widgets/drawer.dart';
-import 'package:pseudo_json/widgets/product_card.dart';
-import 'package:pseudo_json/services/api_services.dart';
+import '../models/auth_user.dart';
+import '../models/products.dart';
+import '../screens/product_detail_page.dart';
+import '../widgets/drawer.dart';
+import '../widgets/product_card.dart';
+import '../services/api_services.dart';
 
 class HomePage extends StatefulWidget {
   final AuthUser user;
@@ -55,7 +55,8 @@ class _HomePageState extends State<HomePage> {
 
   void moveToProductDetail(Product product) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => ProductDetailPage(product: product)),
+      MaterialPageRoute(
+          builder: (context) => ProductDetailPage(product: product)),
     );
   }
 

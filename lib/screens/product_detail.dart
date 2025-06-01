@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pseudo_json/models/products.dart';
-import 'package:pseudo_json/screens/product_detail_page.dart';
-import 'package:pseudo_json/services/api_services.dart';
-import 'package:pseudo_json/widgets/custom_text_field.dart';
+import '../models/products.dart';
+import '../screens/product_detail_page.dart';
+import '../services/api_services.dart';
+import '../widgets/custom_text_field.dart';
 
 class ProductDetail extends StatefulWidget {
   final Product product;
@@ -198,8 +198,8 @@ class _ProductDetailState extends State<ProductDetail> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(23, 59, 69, 1),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),

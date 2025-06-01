@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:pseudo_json/models/auth_response.dart';
-import 'package:pseudo_json/models/auth_user.dart';
-import 'package:pseudo_json/models/products.dart';
+import '../models/auth_response.dart';
+import '../models/auth_user.dart';
+import '../models/products.dart';
 
 Future<AuthResponse?> loginUser(String username, String password) async {
   try {
@@ -57,7 +57,8 @@ Future<List<Product>?> getProductInfo() async {
 
       if (data != null && data['products'] != null) {
         var productsData = data['products'];
-        return List<Product>.from(productsData.map((product) => Product.fromJson(product)));
+        return List<Product>.from(
+            productsData.map((product) => Product.fromJson(product)));
       } else {
         return null;
       }
@@ -70,7 +71,7 @@ Future<List<Product>?> getProductInfo() async {
 }
 
 Future<List<Product>?> getSearchProduct(String keyword) async {
-   try {
+  try {
     final url = Uri.parse('https://dummyjson.com/products/search?q=$keyword');
     final response = await http.get(url);
 
@@ -79,7 +80,8 @@ Future<List<Product>?> getSearchProduct(String keyword) async {
 
       if (data != null && data['products'] != null) {
         var productsData = data['products'];
-        return List<Product>.from(productsData.map((product) => Product.fromJson(product)));
+        return List<Product>.from(
+            productsData.map((product) => Product.fromJson(product)));
       } else {
         return null;
       }
@@ -92,9 +94,9 @@ Future<List<Product>?> getSearchProduct(String keyword) async {
 }
 
 Future<List<Product>?> getSortProducts(String sortBy, String order) async {
-
   try {
-    final url = Uri.parse('https://dummyjson.com/products?sortBy=$sortBy&order=$order');
+    final url =
+        Uri.parse('https://dummyjson.com/products?sortBy=$sortBy&order=$order');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -102,7 +104,8 @@ Future<List<Product>?> getSortProducts(String sortBy, String order) async {
 
       if (data != null && data['products'] != null) {
         var productsData = data['products'];
-        return List<Product>.from(productsData.map((product) => Product.fromJson(product)));
+        return List<Product>.from(
+            productsData.map((product) => Product.fromJson(product)));
       } else {
         return null;
       }
